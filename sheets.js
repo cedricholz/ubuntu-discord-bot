@@ -4,7 +4,7 @@ module.exports = class Sheets {
     }
 
     getKickchenCleaners(client, morning, night) {
-        const creds = require('./cresds_cedric.json');
+        const creds = require('./sheets_creds.json');
 
         const doc = new GoogleSpreadsheet('1rYbqF13iGhGg0AzyXm6fCMsEtOclvfLJ-fgdOU4ClfU');
 

@@ -60,6 +60,7 @@ client.on('ready', () => {
 // });
 
 
-client.login('NTkyOTEzODQ1MTE1MTU4NTI5.XRGRPg.qi0YiudxJ-UowLYktp-PUOdG6ZI');
+const discord_creds = require('./discord_creds.json');
+client.login(discord_creds['key']);
 
 
