@@ -33,7 +33,7 @@ client.on('ready', () => {
     const sheet = new sheets();
 
     console.log(`Logged in as ${client.user.tag}!`);
-    sheet.getKickchenCleaners(client, 1, 3);
+    // sheet.getKickchenCleaners(client, 1, 3);
 
     // Monday
     let nextMondayAT9 = getDayOfWeek(1);
