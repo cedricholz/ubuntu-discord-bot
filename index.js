@@ -35,23 +35,23 @@ client.on('ready', () => {
     const sheet = new sheets();
 
     console.log(`Logged in as ${client.user.tag}!`);
-    sheet.getKickchenCleaners(client, 1, 3);
+    // sheet.getKickchenCleaners(client, 1, 3);
 
     // Monday
-    // let nextMondayAT9 = getDayOfWeek(1);
-    // timeWaiter(sheet, 1, 3, nextMondayAT9);
-    // // Tuesday
-    // let nextTuesdayAT9 = getDayOfWeek(2);
-    // timeWaiter(sheet, 5, 7, nextTuesdayAT9);
-    // // Wednesday
-    // let nextWednesdayAT9 = getDayOfWeek(3);
-    // timeWaiter(sheet, 9, 11, nextWednesdayAT9);
-    // // Thursday
-    // let nextThursdayAT9 = getDayOfWeek(4);
-    // timeWaiter(sheet, 13, 15, nextThursdayAT9);
-    // // Friday
-    // let nextFridayAT9 = getDayOfWeek(5);
-    // timeWaiter(sheet, 17, 19, nextFridayAT9);
+    let nextMondayAT9 = getDayOfWeek(1);
+    timeWaiter(sheet, 1, 3, nextMondayAT9);
+    // Tuesday
+    let nextTuesdayAT9 = getDayOfWeek(2);
+    timeWaiter(sheet, 5, 7, nextTuesdayAT9);
+    // Wednesday
+    let nextWednesdayAT9 = getDayOfWeek(3);
+    timeWaiter(sheet, 9, 11, nextWednesdayAT9);
+    // Thursday
+    let nextThursdayAT9 = getDayOfWeek(4);
+    timeWaiter(sheet, 13, 15, nextThursdayAT9);
+    // Friday
+    let nextFridayAT9 = getDayOfWeek(5);
+    timeWaiter(sheet, 17, 19, nextFridayAT9);
 
 });
 
