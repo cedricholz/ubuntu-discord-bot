@@ -3,13 +3,16 @@
 const GoogleSpreadsheet = require('google-spreadsheet');
 
 const getPeopleFromRow = (row) => {
-    return [
-        row.name1,
-        row.name2,
-        row.name3,
-        row.name4,
-        row.name5,
-    ];
+    if (row) {
+        return [
+            row.name1,
+            row.name2,
+            row.name3,
+            row.name4,
+            row.name5,
+        ];
+    }
+    return []
 };
 
 const getUbuntiansString = (crew) => {

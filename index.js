@@ -40,6 +40,7 @@ client.on('ready', () => {
 
     console.log(`Logged in as ${client.user.tag}!`);
     // sheet.getKickchenCleaners(client, 1, 3);
+    sheet.getCooks(client, 1)
 
     // Cleaners
     let nextMondayAT9 = getDayOfWeek(1);
