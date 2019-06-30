@@ -4,20 +4,24 @@ const Discord = require('discord.js');
 const client = new Discord.Client();
 let sheets = require("./sheets");
 
-const timeWaiter = (sheet, morningIndex, dinnerIndex, nextDate) => {
+const timeWaiter = (sheet, index1, index2, nextDate, timeToWait) => {
 
-    const oneWeekInMilliseconds = 604800000;
 
     let millisecondsUntilNextDate = nextDate - new Date();
 
     setTimeout(function () {
         setInterval(function () {
             try {
-                sheet.getKickchenCleaners(client, morningIndex, dinnerIndex);
+                if (index2) {
+                    sheet.getKickchenCleaners(client, index1, index2);
+                } else {
+                    sheet.getCooks(client, index1)
+                }
+
             } catch (e) {
                 console.log("ERROR:", e)
             }
-        }, oneWeekInMilliseconds);
+        }, timeToWait);
     }, millisecondsUntilNextDate);
 };
 
@@ -37,21 +41,36 @@ client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);
     // sheet.getKickchenCleaners(client, 1, 3);
 
-    // Monday
+    // Cleaners
     let nextMondayAT9 = getDayOfWeek(1);
-    timeWaiter(sheet, 1, 3, nextMondayAT9);
-    // Tuesday
     let nextTuesdayAT9 = getDayOfWeek(2);
-    timeWaiter(sheet, 5, 7, nextTuesdayAT9);
-    // Wednesday
     let nextWednesdayAT9 = getDayOfWeek(3);
-    timeWaiter(sheet, 9, 11, nextWednesdayAT9);
-    // Thursday
     let nextThursdayAT9 = getDayOfWeek(4);
-    timeWaiter(sheet, 13, 15, nextThursdayAT9);
-    // Friday
     let nextFridayAT9 = getDayOfWeek(5);
-    timeWaiter(sheet, 17, 19, nextFridayAT9);
+    const oneWeekInMilliseconds = 604800000;
+
+
+    timeWaiter(sheet, 1, 3, nextMondayAT9, oneWeekInMilliseconds);
+    timeWaiter(sheet, 5, 7, nextTuesdayAT9, oneWeekInMilliseconds);
+    timeWaiter(sheet, 9, 11, nextWednesdayAT9, oneWeekInMilliseconds);
+    timeWaiter(sheet, 13, 15, nextThursdayAT9, oneWeekInMilliseconds);
+    timeWaiter(sheet, 17, 19, nextFridayAT9, oneWeekInMilliseconds);
+
+    // Family Dinner
+    const twoWeeksInMilliseconds = 1209600000;
+    timeWaiter(sheet, 1, null, nextTuesdayAT9, twoWeeksInMilliseconds);
+    timeWaiter(sheet, 3, null, nextThursdayAT9, twoWeeksInMilliseconds);
+
+
+    let nextSundayAT9 = getDayOfWeek(7);
+    let nextNextTuesdayAT9 = getDayOfWeek(9);
+    let nextNextThursdayAT9 = getDayOfWeek(11);
+    let nextNextSundayAT9 = getDayOfWeek(14);
+    timeWaiter(sheet, 5, null, nextSundayAT9, twoWeeksInMilliseconds);
+    timeWaiter(sheet, 7, null, nextNextTuesdayAT9, twoWeeksInMilliseconds);
+    timeWaiter(sheet, 9, null, nextNextThursdayAT9, twoWeeksInMilliseconds);
+    timeWaiter(sheet, 11, null, nextNextSundayAT9, twoWeeksInMilliseconds);
+
 
 });
 
