@@ -48,8 +48,7 @@ module.exports = class Sheets {
                     }
                 }
                 s = s.slice(0, s.length - 2);
-
-                client.channels.get('592916978562236426').send(s);
+                client.channels.get('550082429004677129').send(s);
             });
         });
     }
