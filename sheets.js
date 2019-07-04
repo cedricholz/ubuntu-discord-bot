@@ -2,6 +2,12 @@
 
 const GoogleSpreadsheet = require('google-spreadsheet');
 
+// Bot Test
+// const channelId = '592916978562236426';
+
+// General
+const channelId = '550082429004677129';
+
 const getPeopleFromRow = (row) => {
     if (row) {
         return [
@@ -45,7 +51,7 @@ module.exports = class Sheets {
                 s += '\nEvening cleaning crew:';
                 s += getUbuntiansString(nightCrew);
 
-                client.channels.get('550082429004677129').send(s);
+                client.channels.get(channelId).send(s);
             });
         });
     }
@@ -59,11 +65,7 @@ module.exports = class Sheets {
                 let cookingCrew = getPeopleFromRow(rows[index]);
                 let s = 'Cooking crew: ' + getUbuntiansString(cookingCrew);
 
-                // General
-                client.channels.get('550082429004677129').send(s);
-
-                // Bot-Test
-                // client.channels.get('592916978562236426').send(s);
+                client.channels.get(channelId).send(s);
             });
         });
     }

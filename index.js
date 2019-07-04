@@ -5,23 +5,21 @@ const client = new Discord.Client();
 let sheets = require("./sheets");
 
 const timeWaiter = (sheet, index1, index2, nextDate, timeToWait) => {
-
-
-    let millisecondsUntilNextDate = nextDate - new Date();
-
+    let millisecondsUntilNextDate = nextDate.getTime() - new Date().getTime();
     setTimeout(function () {
-        setInterval(function () {
+        const intervalFunc = () => {
             try {
                 if (index2) {
                     sheet.getKickchenCleaners(client, index1, index2);
                 } else {
                     sheet.getCooks(client, index1)
                 }
-
             } catch (e) {
                 console.log("ERROR:", e)
             }
-        }, timeToWait);
+        };
+        setInterval(intervalFunc, timeToWait);
+        intervalFunc()
     }, millisecondsUntilNextDate);
 };
 
@@ -34,13 +32,16 @@ const getDayOfWeek = (day) => {
     return new Date(d.getTime() + nineHoursInMilliseconds)
 };
 
+
 client.on('ready', () => {
 
     const sheet = new sheets();
 
     console.log(`Logged in as ${client.user.tag}!`);
+
     // sheet.getKickchenCleaners(client, 1, 3);
     // sheet.getCooks(client, 1)
+
 
     // Cleaners
     let nextMondayAT9 = getDayOfWeek(1);
