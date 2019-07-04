@@ -24,10 +24,21 @@ const timeWaiter = (sheet, index1, index2, nextDate, timeToWait) => {
 };
 
 
-const getDayOfWeek = (day) => {
+const getDayOfWeek = (day, nextWeek) => {
     let nineHoursInMilliseconds = 32400000;
     let d = new Date();
-    d.setDate(d.getDate() + (day + 7 - d.getDay()));
+
+    let timeThing = d.getDate() + (7 + day - d.getDay()) % 7;
+
+    if (day - d.getDay() === 0) {
+        timeThing += 7
+    }
+
+    if (nextWeek) {
+        timeThing += 7
+    }
+
+    d.setDate(timeThing);
     d.setHours(0, 0, 0, 0);
     return new Date(d.getTime() + nineHoursInMilliseconds)
 };
@@ -65,9 +76,11 @@ client.on('ready', () => {
 
 
     let nextSundayAT9 = getDayOfWeek(7);
-    let nextNextTuesdayAT9 = getDayOfWeek(9);
-    let nextNextThursdayAT9 = getDayOfWeek(11);
-    let nextNextSundayAT9 = getDayOfWeek(14);
+    let nextNextTuesdayAT9 = getDayOfWeek(2, true);
+    let nextNextThursdayAT9 = getDayOfWeek(4, true);
+    let nextNextSundayAT9 = getDayOfWeek(7, true);
+
+
     timeWaiter(sheet, 5, null, nextSundayAT9, twoWeeksInMilliseconds);
     timeWaiter(sheet, 7, null, nextNextTuesdayAT9, twoWeeksInMilliseconds);
     timeWaiter(sheet, 9, null, nextNextThursdayAT9, twoWeeksInMilliseconds);
