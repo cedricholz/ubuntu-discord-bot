@@ -51,9 +51,24 @@ const getDayOfWeek = (day, nextWeek) => {
     return new Date(d.getTime() + nineHoursPlusTimeDifferenceOffsetInMilliseconds)
 };
 
+function setTimeout_ (fn, delay) {
+    var maxDelay = Math.pow(2,31)-1;
+
+    if (delay > maxDelay) {
+        var args = arguments;
+        args[1] -= maxDelay;
+
+        return setTimeout(function () {
+            setTimeout_.apply(undefined, args);
+        }, maxDelay);
+    }
+
+    return setTimeout.apply(undefined, arguments);
+}
+
 const lastDayOfMonthWaiter = (nextDate) => {
     let millisecondsUntilNextDate = nextDate.getTime() - new Date().getTime();
-    setTimeout(function () {
+    setTimeout_(function () {
         client.channels.get(channelId).send("Hello, it's the last day of the month! Don't forget to pay your rent if you haven't done it yet!");
         lastDayOfMonthWaiter(getLastDayOfMonth(true));
     }, millisecondsUntilNextDate);
@@ -79,7 +94,7 @@ client.on('ready', () => {
 
     console.log(`Logged in as ${client.user.tag}!`);
 
-    lastDayOfMonthWaiter(getLastDayOfMonth())
+    lastDayOfMonthWaiter(getLastDayOfMonth());
 
     // sheet.getKickchenCleaners(client, 1, 3);
     // sheet.getCooks(client, 1)
