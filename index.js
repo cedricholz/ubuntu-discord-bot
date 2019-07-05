@@ -3,6 +3,13 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
 let sheets = require("./sheets");
+const nineHoursPlusTimeDifferenceOffsetInMilliseconds = 57600000;
+
+// Bot Test
+// const channelId = '592916978562236426';
+
+// General
+const channelId = '550082429004677129';
 
 const timeWaiter = (sheet, index1, index2, nextDate, timeToWait) => {
     let millisecondsUntilNextDate = nextDate.getTime() - new Date().getTime();
@@ -25,7 +32,8 @@ const timeWaiter = (sheet, index1, index2, nextDate, timeToWait) => {
 
 
 const getDayOfWeek = (day, nextWeek) => {
-    let nineHoursInMilliseconds = 32400000;
+    // let nineHoursInMilliseconds = 32400000;
+
     let d = new Date();
 
     let timeThing = d.getDate() + (7 + day - d.getDay()) % 7;
@@ -40,7 +48,28 @@ const getDayOfWeek = (day, nextWeek) => {
 
     d.setDate(timeThing);
     d.setHours(0, 0, 0, 0);
-    return new Date(d.getTime() + nineHoursInMilliseconds)
+    return new Date(d.getTime() + nineHoursPlusTimeDifferenceOffsetInMilliseconds)
+};
+
+const lastDayOfMonthWaiter = (nextDate) => {
+    let millisecondsUntilNextDate = nextDate.getTime() - new Date().getTime();
+    setTimeout(function () {
+        client.channels.get(channelId).send("Hello, it's the last day of the month! Don't forget to pay your rent if you haven't done it yet!");
+        lastDayOfMonthWaiter(getLastDayOfMonth(true));
+    }, millisecondsUntilNextDate);
+};
+
+const getLastDayOfMonth = (next) => {
+    let today = new Date();
+    let offset = 1;
+    if (next) {
+        offset += 1
+    }
+
+    let d = new Date(today.getFullYear(), today.getMonth() + offset, 0);
+
+    d.setHours(0, 0, 0, 0);
+    return new Date(d.getTime() + nineHoursPlusTimeDifferenceOffsetInMilliseconds)
 };
 
 
@@ -49,6 +78,8 @@ client.on('ready', () => {
     const sheet = new sheets();
 
     console.log(`Logged in as ${client.user.tag}!`);
+
+    lastDayOfMonthWaiter(getLastDayOfMonth())
 
     // sheet.getKickchenCleaners(client, 1, 3);
     // sheet.getCooks(client, 1)

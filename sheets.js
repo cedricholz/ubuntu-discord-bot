@@ -64,7 +64,6 @@ module.exports = class Sheets {
             doc.getRows(3, function (err, rows) {
                 let cookingCrew = getPeopleFromRow(rows[index]);
                 let s = 'Cooking crew: ' + getUbuntiansString(cookingCrew);
-
                 client.channels.get(channelId).send(s);
             });
         });
