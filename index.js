@@ -87,7 +87,7 @@ const getLastDayOfMonth = (next) => {
     let d = new Date(today.getFullYear(), today.getMonth() + offset, 0);
 
     d.setHours(0, 0, 0, 0);
-    return new Date(d.getTime() + nineHoursPlusTimeDifferenceOffsetInMilliseconds)
+    return new Date(d.getTime() + nineHoursInMilliseconds + timeOffset)
 };
 
 
@@ -123,7 +123,7 @@ client.on('ready', () => {
 
     let nextTuesdayAT10 = getDayOfWeek(2, false, tenHoursInMilliseconds);
     let nextThursdayAT10 = getDayOfWeek(4, false, tenHoursInMilliseconds);
-    let nextSundayAT10 = getDayOfWeek(7, false, tenHoursInMilliseconds);
+    let nextSundayAT10 = getDayOfWeek(0, false, tenHoursInMilliseconds);
 
     let nextNextTuesdayAT10 = getDayOfWeek(2, true, tenHoursInMilliseconds);
     let nextNextThursdayAT10 = getDayOfWeek(4, true, tenHoursInMilliseconds);
