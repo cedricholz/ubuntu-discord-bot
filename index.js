@@ -3,7 +3,10 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
 let sheets = require("./sheets");
-const nineHoursPlusTimeDifferenceOffsetInMilliseconds = 57600000;
+
+const timeOffset = 25200000
+const nineHoursInMilliseconds = 32400000;
+const tenHoursInMilliseconds = 36000000;
 
 // Bot Test
 // const channelId = '592916978562236426';
@@ -31,7 +34,7 @@ const timeWaiter = (sheet, index1, index2, nextDate, timeToWait) => {
 };
 
 
-const getDayOfWeek = (day, nextWeek) => {
+const getDayOfWeek = (day, nextWeek, hourOfDayInMilliseconds) => {
     // let nineHoursInMilliseconds = 32400000;
 
     let d = new Date();
@@ -48,11 +51,11 @@ const getDayOfWeek = (day, nextWeek) => {
 
     d.setDate(timeThing);
     d.setHours(0, 0, 0, 0);
-    return new Date(d.getTime() + nineHoursPlusTimeDifferenceOffsetInMilliseconds)
+    return new Date(d.getTime() + hourOfDayInMilliseconds + timeOffset)
 };
 
-function setTimeout_ (fn, delay) {
-    var maxDelay = Math.pow(2,31)-1;
+function setTimeout_(fn, delay) {
+    var maxDelay = Math.pow(2, 31) - 1;
 
     if (delay > maxDelay) {
         var args = arguments;
@@ -101,11 +104,11 @@ client.on('ready', () => {
 
 
     // Cleaners
-    let nextMondayAT9 = getDayOfWeek(1);
-    let nextTuesdayAT9 = getDayOfWeek(2);
-    let nextWednesdayAT9 = getDayOfWeek(3);
-    let nextThursdayAT9 = getDayOfWeek(4);
-    let nextFridayAT9 = getDayOfWeek(5);
+    let nextMondayAT9 = getDayOfWeek(1, false, nineHoursInMilliseconds);
+    let nextTuesdayAT9 = getDayOfWeek(2, false, nineHoursInMilliseconds);
+    let nextWednesdayAT9 = getDayOfWeek(3, false, nineHoursInMilliseconds);
+    let nextThursdayAT9 = getDayOfWeek(4, false, nineHoursInMilliseconds);
+    let nextFridayAT9 = getDayOfWeek(5, false, nineHoursInMilliseconds);
     const oneWeekInMilliseconds = 604800000;
 
 
@@ -117,20 +120,21 @@ client.on('ready', () => {
 
     // Family Dinner
     const twoWeeksInMilliseconds = 1209600000;
-    timeWaiter(sheet, 1, null, nextTuesdayAT9, twoWeeksInMilliseconds);
-    timeWaiter(sheet, 3, null, nextThursdayAT9, twoWeeksInMilliseconds);
 
+    let nextTuesdayAT10 = getDayOfWeek(2, false, tenHoursInMilliseconds);
+    let nextThursdayAT10 = getDayOfWeek(4, false, tenHoursInMilliseconds);
+    let nextSundayAT10 = getDayOfWeek(7, false, tenHoursInMilliseconds);
 
-    let nextSundayAT9 = getDayOfWeek(7);
-    let nextNextTuesdayAT9 = getDayOfWeek(2, true);
-    let nextNextThursdayAT9 = getDayOfWeek(4, true);
-    let nextNextSundayAT9 = getDayOfWeek(7, true);
+    let nextNextTuesdayAT10 = getDayOfWeek(2, true, tenHoursInMilliseconds);
+    let nextNextThursdayAT10 = getDayOfWeek(4, true, tenHoursInMilliseconds);
+    let nextNextSundayAT10 = getDayOfWeek(7, true, tenHoursInMilliseconds);
 
-
-    timeWaiter(sheet, 5, null, nextSundayAT9, twoWeeksInMilliseconds);
-    timeWaiter(sheet, 7, null, nextNextTuesdayAT9, twoWeeksInMilliseconds);
-    timeWaiter(sheet, 9, null, nextNextThursdayAT9, twoWeeksInMilliseconds);
-    timeWaiter(sheet, 11, null, nextNextSundayAT9, twoWeeksInMilliseconds);
+    timeWaiter(sheet, 1, null, nextTuesdayAT10, twoWeeksInMilliseconds);
+    timeWaiter(sheet, 3, null, nextThursdayAT10, twoWeeksInMilliseconds);
+    timeWaiter(sheet, 5, null, nextSundayAT10, twoWeeksInMilliseconds);
+    timeWaiter(sheet, 7, null, nextNextTuesdayAT10, twoWeeksInMilliseconds);
+    timeWaiter(sheet, 9, null, nextNextThursdayAT10, twoWeeksInMilliseconds);
+    timeWaiter(sheet, 11, null, nextNextSundayAT10, twoWeeksInMilliseconds);
 
 
 });
