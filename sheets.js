@@ -36,7 +36,7 @@ module.exports = class Sheets {
     constructor() {
     }
 
-    getKickchenCleaners(client, morning, night) {
+    getKitchenCleaners(client, morning, night) {
         const creds = require('./sheets_creds.json');
         const doc = new GoogleSpreadsheet('1rYbqF13iGhGg0AzyXm6fCMsEtOclvfLJ-fgdOU4ClfU');
         // Authenticate with the Google Spreadsheets API.
@@ -48,7 +48,7 @@ module.exports = class Sheets {
                 // Night
                 let nightCrew = getPeopleFromRow(rows[night]);
                 let s = 'Morning cleaning crew: ' + getUbuntiansString(morningCrew);
-                s += '\nEvening cleaning crew:';
+                s += '\nEvening cleaning crew: ';
                 s += getUbuntiansString(nightCrew);
 
                 client.channels.get(channelId).send(s);
@@ -61,7 +61,7 @@ module.exports = class Sheets {
         const doc = new GoogleSpreadsheet('1rYbqF13iGhGg0AzyXm6fCMsEtOclvfLJ-fgdOU4ClfU');
         // Authenticate with the Google Spreadsheets API.
         doc.useServiceAccountAuth(creds, function (err) {
-            doc.getRows(3, function (err, rows) {
+            doc.getRows(1, function (err, rows) {
                 let cookingCrew = getPeopleFromRow(rows[index]);
                 let s = 'Cooking crew: ' + getUbuntiansString(cookingCrew);
                 client.channels.get(channelId).send(s);

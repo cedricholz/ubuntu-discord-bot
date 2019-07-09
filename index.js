@@ -20,7 +20,7 @@ const timeWaiter = (sheet, index1, index2, nextDate, timeToWait) => {
         const intervalFunc = () => {
             try {
                 if (index2) {
-                    sheet.getKickchenCleaners(client, index1, index2);
+                    sheet.getKitchenCleaners(client, index1, index2);
                 } else {
                     sheet.getCooks(client, index1)
                 }
@@ -99,9 +99,8 @@ client.on('ready', () => {
 
     lastDayOfMonthWaiter(getLastDayOfMonth());
 
-    // sheet.getKickchenCleaners(client, 1, 3);
+    // sheet.getKitchenCleaners(client, 1, 3);
     // sheet.getCooks(client, 1)
-
 
     // Cleaners
     let nextMondayAT9 = getDayOfWeek(1, false, nineHoursInMilliseconds);
