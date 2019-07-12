@@ -126,7 +126,7 @@ client.on('ready', () => {
 
     let nextNextTuesdayAT10 = getDayOfWeek(2, true, tenHoursInMilliseconds);
     let nextNextThursdayAT10 = getDayOfWeek(4, true, tenHoursInMilliseconds);
-    let nextNextSundayAT10 = getDayOfWeek(7, true, tenHoursInMilliseconds);
+    let nextNextSundayAT10 = getDayOfWeek(0, true, tenHoursInMilliseconds);
 
     timeWaiter(sheet, 1, null, nextTuesdayAT10, twoWeeksInMilliseconds);
     timeWaiter(sheet, 3, null, nextThursdayAT10, twoWeeksInMilliseconds);
