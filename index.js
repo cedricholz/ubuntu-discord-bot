@@ -118,12 +118,12 @@ const getDateCopyAndNextWeekIfNeeded = (daysPastMonday) => {
 
     let returnDate = new Date();
     returnDate.setDate(getMonday(new Date()).getDate() + daysPastMonday);
-
+    returnDate.setHours(0, 0, 0, 0);
     if (isDateBeforeToday(returnDate)) {
         returnDate.setDate(returnDate.getDate() + 14);
     }
 
-    returnDate.setHours(0, 0, 0, 0);
+
     return new Date(returnDate.getTime() + tenHoursInMilliseconds + timeOffset)
 };
 
@@ -138,7 +138,7 @@ const getTwoWeekDates = () => {
     let thursday2 = getDateCopyAndNextWeekIfNeeded(10);
     let sunday2 = getDateCopyAndNextWeekIfNeeded(13);
 
-    let weekNo = getWeekNo(new Date());
+    let weekNo = getWeekNo(getMonday(new Date()));
 
     if (weekNo % 2 !== 0) {
         return {
@@ -181,7 +181,6 @@ client.on('ready', () => {
     let nextFridayAT9 = getDayOfWeek(5, false, nineHoursInMilliseconds);
     const oneWeekInMilliseconds = 604800000;
 
-
     timeWaiter(sheet, 1, 3, nextMondayAT9, oneWeekInMilliseconds);
     timeWaiter(sheet, 5, 7, nextTuesdayAT9, oneWeekInMilliseconds);
     timeWaiter(sheet, 9, 11, nextWednesdayAT9, oneWeekInMilliseconds);
@@ -189,7 +188,6 @@ client.on('ready', () => {
     timeWaiter(sheet, 17, 19, nextFridayAT9, oneWeekInMilliseconds);
 
     // Family Dinner
-
 
     const {
         tuesday1,
@@ -211,11 +209,11 @@ client.on('ready', () => {
 
 });
 
-// client.on('message', msg => {
-//     if (msg.content === 'ping') {
-//         msg.reply('Pong!')
-//     }
-// });
+client.on('message', msg => {
+    if (msg.author.id === '313838517031534593') {
+        client.channels.get(channelId).send(msg.content);
+    }
+});
 
 
 const discord_creds = require('./discord_creds.json');
