@@ -210,7 +210,7 @@ client.on('ready', () => {
 });
 
 client.on('message', msg => {
-    if (msg.author.id === '313838517031534593') {
+    if ((msg.author.id === '313838517031534593' || msg.author.id === '536365234290688010') && msg.channel.type === 'dm') {
         client.channels.get(channelId).send(msg.content);
     }
 });
