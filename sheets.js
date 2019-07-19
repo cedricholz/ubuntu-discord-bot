@@ -36,22 +36,25 @@ module.exports = class Sheets {
     constructor() {
     }
 
-    getKitchenCleaners(client, morning, night) {
+    getKitchenCleaners(client, morning, night, dayOrNight) {
         const creds = require('./sheets_creds.json');
         const doc = new GoogleSpreadsheet('1rYbqF13iGhGg0AzyXm6fCMsEtOclvfLJ-fgdOU4ClfU');
         // Authenticate with the Google Spreadsheets API.
         doc.useServiceAccountAuth(creds, function (err) {
             doc.getRows(2, function (err, rows) {
                 // Morning
-                let morningCrew = getPeopleFromRow(rows[morning]);
-
+                if (dayOrNight === 'day') {
+                    let morningCrew = getPeopleFromRow(rows[morning]);
+                    let s = 'Morning cleaning crew: ' + getUbuntiansString(morningCrew);
+                    s += getUbuntiansString(morningCrew);
+                    client.channels.get(channelId).send(s);
+                }
                 // Night
-                let nightCrew = getPeopleFromRow(rows[night]);
-                let s = 'Morning cleaning crew: ' + getUbuntiansString(morningCrew);
-                s += '\nEvening cleaning crew: ';
-                s += getUbuntiansString(nightCrew);
-
-                client.channels.get(channelId).send(s);
+                if (dayOrNight === 'night') {
+                    let nightCrew = getPeopleFromRow(rows[night]);
+                    let s = 'Evening cleaning crew: ' + getUbuntiansString(nightCrew);
+                    client.channels.get(channelId).send(s);
+                }
             });
         });
     }
