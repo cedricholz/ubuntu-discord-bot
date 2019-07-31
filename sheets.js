@@ -46,7 +46,6 @@ module.exports = class Sheets {
                 if (dayOrNight === 'day') {
                     let morningCrew = getPeopleFromRow(rows[morning]);
                     let s = 'Morning cleaning crew: ' + getUbuntiansString(morningCrew);
-                    s += getUbuntiansString(morningCrew);
                     client.channels.get(channelId).send(s);
                 }
                 // Night
