@@ -1,6 +1,9 @@
 "use strict";
 
 const GoogleSpreadsheet = require('google-spreadsheet');
+const creds = require('./sheets_creds.json');
+// Authenticate with the Google Spreadsheets API.
+const doc = new GoogleSpreadsheet('1rYbqF13iGhGg0AzyXm6fCMsEtOclvfLJ-fgdOU4ClfU');
 
 // Bot Test
 // const channelId = '592916978562236426';
@@ -36,10 +39,18 @@ module.exports = class Sheets {
     constructor() {
     }
 
+
+    getCooks(client, index) {
+        doc.useServiceAccountAuth(creds, function (err) {
+            doc.getRows(1, function (err, rows) {
+                let cookingCrew = getPeopleFromRow(rows[index]);
+                let s = 'Cooking crew: ' + getUbuntiansString(cookingCrew);
+                client.channels.get(channelId).send(s);
+            });
+        });
+    }
+
     getKitchenCleaners(client, morning, night, dayOrNight) {
-        const creds = require('./sheets_creds.json');
-        const doc = new GoogleSpreadsheet('1rYbqF13iGhGg0AzyXm6fCMsEtOclvfLJ-fgdOU4ClfU');
-        // Authenticate with the Google Spreadsheets API.
         doc.useServiceAccountAuth(creds, function (err) {
             doc.getRows(2, function (err, rows) {
                 // Morning
@@ -58,14 +69,12 @@ module.exports = class Sheets {
         });
     }
 
-    getCooks(client, index) {
-        const creds = require('./sheets_creds.json');
-        const doc = new GoogleSpreadsheet('1rYbqF13iGhGg0AzyXm6fCMsEtOclvfLJ-fgdOU4ClfU');
-        // Authenticate with the Google Spreadsheets API.
+
+    getFarmers(client, index) {
         doc.useServiceAccountAuth(creds, function (err) {
-            doc.getRows(1, function (err, rows) {
+            doc.getRows(3, function (err, rows) {
                 let cookingCrew = getPeopleFromRow(rows[index]);
-                let s = 'Cooking crew: ' + getUbuntiansString(cookingCrew);
+                let s = "Farmer's market crew: " + getUbuntiansString(cookingCrew);
                 client.channels.get(channelId).send(s);
             });
         });

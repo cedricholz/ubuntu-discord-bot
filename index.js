@@ -9,21 +9,27 @@ const nineHoursInMilliseconds = 32400000;
 const seventeenHoursInMilliseconds = 61200000;
 const tenHoursInMilliseconds = 36000000;
 
+const KITCHEN_CLEANERS = 'KITCHEN_CLEANERS';
+const COOKS = 'COOKS';
+const FARMERS_MARKET = 'FARMERS_MARKET';
+
 // Bot Test
 // const channelId = '592916978562236426';
 
 // General
 const channelId = '550082429004677129';
 
-const timeWaiter = (sheet, index1, index2, nextDate, timeToWait, dayOrNight) => {
+const timeWaiter = (sheet, index1, index2, nextDate, timeToWait, dayOrNight, type) => {
     let millisecondsUntilNextDate = nextDate.getTime() - new Date().getTime();
     setTimeout(function () {
         const intervalFunc = () => {
             try {
-                if (index2) {
+                if (type === KITCHEN_CLEANERS) {
                     sheet.getKitchenCleaners(client, index1, index2, dayOrNight);
-                } else {
+                } else if (type === COOKS) {
                     sheet.getCooks(client, index1)
+                } else if (type === FARMERS_MARKET) {
+                    sheet.getFarmers(client, index1)
                 }
             } catch (e) {
                 console.log("ERROR:", e)
@@ -115,7 +121,7 @@ const isDateBeforeToday = (date) => {
     return date < new Date();
 };
 
-const getDateCopyAndNextWeekIfNeeded = (daysPastMonday) => {
+const getDateCopyAndNextWeekIfNeeded = (daysPastMonday, hoursInMilliseconds) => {
 
     let returnDate = new Date();
     returnDate.setDate(getMonday(new Date()).getDate() + daysPastMonday);
@@ -125,19 +131,19 @@ const getDateCopyAndNextWeekIfNeeded = (daysPastMonday) => {
     }
 
 
-    return new Date(returnDate.getTime() + tenHoursInMilliseconds + timeOffset)
+    return new Date(returnDate.getTime() + hoursInMilliseconds + timeOffset)
 };
 
-const getTwoWeekDates = () => {
+const getTwoWeekDates = (hoursInMilliseconds) => {
 
 
-    let tuesday1 = getDateCopyAndNextWeekIfNeeded(1);
-    let thursday1 = getDateCopyAndNextWeekIfNeeded(3);
-    let sunday1 = getDateCopyAndNextWeekIfNeeded(6);
+    let tuesday1 = getDateCopyAndNextWeekIfNeeded(1, hoursInMilliseconds);
+    let thursday1 = getDateCopyAndNextWeekIfNeeded(3, hoursInMilliseconds);
+    let sunday1 = getDateCopyAndNextWeekIfNeeded(6, hoursInMilliseconds);
 
-    let tuesday2 = getDateCopyAndNextWeekIfNeeded(8);
-    let thursday2 = getDateCopyAndNextWeekIfNeeded(10);
-    let sunday2 = getDateCopyAndNextWeekIfNeeded(13);
+    let tuesday2 = getDateCopyAndNextWeekIfNeeded(8, hoursInMilliseconds);
+    let thursday2 = getDateCopyAndNextWeekIfNeeded(10, hoursInMilliseconds);
+    let sunday2 = getDateCopyAndNextWeekIfNeeded(13, hoursInMilliseconds);
 
     let weekNo = getWeekNo(getMonday(new Date()));
 
@@ -187,16 +193,16 @@ client.on('ready', () => {
     let nextFridayATNight = getDayOfWeek(5, false, seventeenHoursInMilliseconds);
     const oneWeekInMilliseconds = 604800000;
 
-    timeWaiter(sheet, 1, 3, nextMondayATDay, oneWeekInMilliseconds, 'day');
-    timeWaiter(sheet, 1, 3, nextMondayATNight, oneWeekInMilliseconds, 'night');
-    timeWaiter(sheet, 5, 7, nextTuesdayATDay, oneWeekInMilliseconds, 'day');
-    timeWaiter(sheet, 5, 7, nextTuesdayATNight, oneWeekInMilliseconds, 'night');
-    timeWaiter(sheet, 9, 11, nextWednesdayATDay, oneWeekInMilliseconds, 'day');
-    timeWaiter(sheet, 9, 11, nextWednesdayATNight, oneWeekInMilliseconds, 'night');
-    timeWaiter(sheet, 13, 15, nextThursdayATDay, oneWeekInMilliseconds, 'day');
-    timeWaiter(sheet, 13, 15, nextThursdayATNight, oneWeekInMilliseconds, 'night');
-    timeWaiter(sheet, 17, 19, nextFridayATDay, oneWeekInMilliseconds, 'day');
-    timeWaiter(sheet, 17, 19, nextFridayATNight, oneWeekInMilliseconds, 'night');
+    timeWaiter(sheet, 1, 3, nextMondayATDay, oneWeekInMilliseconds, 'day', KITCHEN_CLEANERS);
+    timeWaiter(sheet, 1, 3, nextMondayATNight, oneWeekInMilliseconds, 'night', KITCHEN_CLEANERS);
+    timeWaiter(sheet, 5, 7, nextTuesdayATDay, oneWeekInMilliseconds, 'day', KITCHEN_CLEANERS);
+    timeWaiter(sheet, 5, 7, nextTuesdayATNight, oneWeekInMilliseconds, 'night', KITCHEN_CLEANERS);
+    timeWaiter(sheet, 9, 11, nextWednesdayATDay, oneWeekInMilliseconds, 'day', KITCHEN_CLEANERS);
+    timeWaiter(sheet, 9, 11, nextWednesdayATNight, oneWeekInMilliseconds, 'night', KITCHEN_CLEANERS);
+    timeWaiter(sheet, 13, 15, nextThursdayATDay, oneWeekInMilliseconds, 'day', KITCHEN_CLEANERS);
+    timeWaiter(sheet, 13, 15, nextThursdayATNight, oneWeekInMilliseconds, 'night', KITCHEN_CLEANERS);
+    timeWaiter(sheet, 17, 19, nextFridayATDay, oneWeekInMilliseconds, 'day', KITCHEN_CLEANERS);
+    timeWaiter(sheet, 17, 19, nextFridayATNight, oneWeekInMilliseconds, 'night', KITCHEN_CLEANERS);
 
     // Family Dinner
 
@@ -207,16 +213,22 @@ client.on('ready', () => {
         tuesday2,
         thursday2,
         sunday2,
-    } = getTwoWeekDates();
+    } = getTwoWeekDates(tenHoursInMilliseconds);
 
     const twoWeeksInMilliseconds = 1209600000;
 
-    timeWaiter(sheet, 1, null, tuesday1, twoWeeksInMilliseconds);
-    timeWaiter(sheet, 3, null, thursday1, twoWeeksInMilliseconds);
-    timeWaiter(sheet, 5, null, sunday1, twoWeeksInMilliseconds);
-    timeWaiter(sheet, 7, null, tuesday2, twoWeeksInMilliseconds);
-    timeWaiter(sheet, 9, null, thursday2, twoWeeksInMilliseconds);
-    timeWaiter(sheet, 11, null, sunday2, twoWeeksInMilliseconds);
+    timeWaiter(sheet, 1, null, tuesday1, twoWeeksInMilliseconds, null, COOKS);
+    timeWaiter(sheet, 3, null, thursday1, twoWeeksInMilliseconds, null, COOKS);
+    timeWaiter(sheet, 5, null, sunday1, twoWeeksInMilliseconds, null, COOKS);
+    timeWaiter(sheet, 7, null, tuesday2, twoWeeksInMilliseconds, null, COOKS);
+    timeWaiter(sheet, 9, null, thursday2, twoWeeksInMilliseconds, null, COOKS);
+    timeWaiter(sheet, 11, null, sunday2, twoWeeksInMilliseconds, null, COOKS);
+
+    const farmersMarketTwoWeekDates = getTwoWeekDates(nineHoursInMilliseconds);
+
+    // Farmer's Market
+    timeWaiter(sheet, 1, null, farmersMarketTwoWeekDates.sunday1, twoWeeksInMilliseconds, null, FARMERS_MARKET);
+    timeWaiter(sheet, 3, null, farmersMarketTwoWeekDates.sunday2, twoWeeksInMilliseconds, null, FARMERS_MARKET);
 
 });
 
