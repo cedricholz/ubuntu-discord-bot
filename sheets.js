@@ -36,9 +36,10 @@ const getUbuntiansString = (crew) => {
 };
 
 module.exports = class Sheets {
-    constructor() {
-    }
 
+    constructor() {
+
+    }
 
     getCooks(client, index) {
         doc.useServiceAccountAuth(creds, function (err) {
@@ -69,12 +70,11 @@ module.exports = class Sheets {
         });
     }
 
-
     getFarmers(client, index) {
         doc.useServiceAccountAuth(creds, function (err) {
             doc.getRows(3, function (err, rows) {
-                let cookingCrew = getPeopleFromRow(rows[index]);
-                let s = "Farmer's market crew: " + getUbuntiansString(cookingCrew);
+                let farmersMarketCrew = getPeopleFromRow(rows[index]);
+                let s = "Farmer's market crew: " + getUbuntiansString(farmersMarketCrew);
                 client.channels.get(channelId).send(s);
             });
         });
